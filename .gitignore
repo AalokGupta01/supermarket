@@ -1,0 +1,69 @@
+# ------------------------------------
+# 1. DEPENDENCIES AND ARTIFACTS
+# ------------------------------------
+# Node.js dependencies
+/node_modules
+# Ignore the logs directory (if used)
+/logs
+# Package manager debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Build and output directories
+/dist
+/build
+/out
+/coverage
+.nyc_output/
+
+# Compiled files
+*.js.map
+*.ts.map
+
+# ------------------------------------
+# 2. ENVIRONMENT & SECRETS
+# ------------------------------------
+# Environment variables containing secrets like API keys, database URLs, etc.
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Optional: Configuration files that store sensitive data
+config/local.json
+config/database.js
+
+# ------------------------------------
+# 3. OS AND EDITOR FILES
+# ------------------------------------
+# Operating System files
+.DS_Store # Mac OS
+Thumbs.db # Windows
+
+# VS Code specific files (User settings are local, so we ignore most)
+.vscode/
+# EXCEPT: You can uncomment the next line if you want to share specific
+# settings (like launch/debug configurations) with your team:
+#!.vscode/launch.json
+#!.vscode/settings.json
+
+# Other editor/ide config files (if you also use other tools)
+.idea/ # IntelliJ / WebStorm
+*.iml
+*.iws
+*.bak
+
+# ------------------------------------
+# 4. TESTING AND CACHE
+# ------------------------------------
+# Test coverage reports
+/test/coverage/
+
+# Common caches
+.cache
+.npm
