@@ -212,11 +212,34 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, updatedUser, "Account details updated successfully"));
 });
 
+const changePasswordLogin = asyncHandler(async (req, res) => {
+    const { username, email, oldPassword ,newPassword } = req.body;
+    if (!username && !email) {
+        throw new ApiError(400, "username or email is required")
+    }
+    const user = await User.findOne({
+        $or: [{ username }, { email }] 
+    })
+    if (!user) {
+        throw new ApiError(404, "User does not exist")
+    }
+    const isPasswordValid = await user.isPasswordCorrect(oldPassword)
+    if (!isPasswordValid) {
+        throw new ApiError(401, "Invalid user credentials")
+    }
+    user.password = newPassword
+    await user.save({ validateBeforeSave: false })
+    return res
+        .status(200)
+        .json(new ApiResponse(200, {}, "Password changed successfully"))
+})
+
 export {
     registerUser,
     loginUser,
     logoutUser,
     changeCurrentPassword,
     getCurrentUser,
-    updateAccountDetails
+    updateAccountDetails,
+    changePasswordLogin
 }

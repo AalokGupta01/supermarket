@@ -4,6 +4,23 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { Product } from "../models/product.model.js";
 import mongoose from "mongoose";
 
+// --- NEW FUNCTION: Handle Image Upload ---
+const uploadProductImage = asyncHandler(async (req, res) => {
+    if (!req.file) {
+        throw new ApiError(400, "No image file uploaded");
+    }
+
+    // Construct the URL to access the image
+    // Note: Ensure your app.js has: app.use('/assets', express.static('assets'));
+    // const imageUrl = `${req.protocol}://${req.get("host")}/uploaded_image/${req.file.filename}`;
+    const imageUrl = `${req.protocol}://uploaded_image/${req.file.filename}`;
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, { url: imageUrl }, "Image uploaded successfully"));
+});
+// -----------------------------------------
+
 const createProduct = asyncHandler(async (req, res) => {
   const {
     pname,
@@ -18,6 +35,7 @@ const createProduct = asyncHandler(async (req, res) => {
     expiryDate,
   } = req.body;
 
+  // Added validations for string types just in case
   if (!pname || !price || !quantity || !imageUrl || !category) {
     throw new ApiError(400, "Required fields are missing");
   }
@@ -37,7 +55,7 @@ const createProduct = asyncHandler(async (req, res) => {
     discount,
     quantity,
     available: available || quantity,
-    imageUrl,
+    imageUrl, // This URL comes from the response of uploadProductImage
     expiryDate,
   });
 
@@ -152,6 +170,7 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
 
 export {
   createProduct,
+  uploadProductImage, // Export the new function
   getAllProducts,
   getProductById,
   updateProduct,

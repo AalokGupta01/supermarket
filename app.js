@@ -8,6 +8,8 @@ import productRouter from './routes/product.routes.js';
 import cartRouter from './routes/cart.routes.js';
 import addressRouter from './routes/address.routes.js';
 import orderRouter from "./routes/order.routes.js";
+import sellerRouter from "./routes/seller.routes.js";
+import adminRouter from "./routes/admin.routes.js";
 import { ApiError } from "./utils/ApiError.js";
 
 const app = express();
@@ -31,6 +33,8 @@ app.use("/api/v1/products", productRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/address", addressRouter);
 app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/seller", sellerRouter);
 
 
 app.use((err, req, res, next) => {

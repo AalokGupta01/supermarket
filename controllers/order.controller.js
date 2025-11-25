@@ -156,7 +156,47 @@ const getUserOrders = asyncHandler(async (req, res) => {
         );
 });
 
+const getAllOrders = asyncHandler(async (req, res) => {
+    // Fetch all orders, sorted by newest first
+    // Populate user details to show who placed the order
+    const orders = await Order.find({})
+        .populate("user", "username email fullName") 
+        .sort({ createdAt: -1 });
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, orders, "All orders fetched successfully"));
+});
+
+// --- NEW: Update Order Status ---
+const updateOrderStatus = asyncHandler(async (req, res) => {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    if (!["Pending", "Shipped", "Delivered", "Cancelled"].includes(status)) {
+        throw new ApiError(400, "Invalid order status");
+    }
+
+    const order = await Order.findByIdAndUpdate(
+        orderId,
+        { 
+            $set: { orderStatus: status }
+        },
+        { new: true }
+    );
+
+    if (!order) {
+        throw new ApiError(404, "Order not found");
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, order, "Order status updated"));
+});
+
 export {
     placeOrder,
-    getUserOrders 
+    getUserOrders,
+    getAllOrders,      // Exported
+    updateOrderStatus
 };
