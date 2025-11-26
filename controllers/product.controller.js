@@ -13,7 +13,7 @@ const uploadProductImage = asyncHandler(async (req, res) => {
     // Construct the URL to access the image
     // Note: Ensure your app.js has: app.use('/assets', express.static('assets'));
     // const imageUrl = `${req.protocol}://${req.get("host")}/uploaded_image/${req.file.filename}`;
-    const imageUrl = `${req.protocol}://uploaded_image/${req.file.filename}`;
+    const imageUrl = `https://supermarket-back.onrender.com/uploaded_image/${req.file.filename}`;
 
     return res
         .status(200)
